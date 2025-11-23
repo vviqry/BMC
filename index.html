@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Model Canvas - Usaha Pisang Keju</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #0066cc;
+        }
+        .bmc-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-rows: 1fr 1fr 1fr;
+            gap: 10px;
+            max-width: 1400px;
+            margin: 0 auto;
+            height: 80vh;
+            grid-template-areas:
+                "partners activities value segments"
+                "resources revenue relationships channels"
+                "cost cost cost cost";
+        }
+        .bmc-block {
+            background-color: white;
+            border: 2px solid #0066cc;
+            padding: 10px;
+            border-radius: 8px;
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 2px 5px rgba(0, 102, 204, 0.1);
+        }
+        .bmc-block h3 {
+            margin-top: 0;
+            color: #0066cc;
+            font-size: 14px;
+            text-align: center;
+            background-color: #e6f2ff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+        .bmc-block ul, .bmc-block ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .edit-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 5px 10px;
+            cursor: pointer;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        .bmc-block:hover .edit-btn {
+            opacity: 1;
+        }
+        .edit-mode {
+            display: none;
+        }
+        .edit-mode textarea {
+            width: 100%;
+            height: 80%;
+            resize: vertical;
+            border: 1px solid #0066cc;
+            border-radius: 3px;
+            padding: 5px;
+            font-family: Arial, sans-serif;
+        }
+        .save-btn, .cancel-btn {
+            margin-top: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .save-btn {
+            background-color: #0066cc;
+            color: white;
+        }
+        .cancel-btn {
+            background-color: #ccc;
+            margin-left: 5px;
+        }
+        .floating-note {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: #0066cc;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 2px 10px rgba(0, 102, 204, 0.3);
+            z-index: 1000;
+        }
+        .note-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 102, 204, 0.5);
+            z-index: 1001;
+        }
+        .note-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #0066cc;
+            width: 80%;
+            max-width: 600px;
+            max-height: 80%;
+            overflow-y: auto;
+        }
+        .note-content h3 {
+            margin-top: 0;
+            color: #0066cc;
+        }
+        .note-content textarea {
+            width: 100%;
+            height: 300px;
+            resize: vertical;
+            border: 1px solid #0066cc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-family: Arial, sans-serif;
+        }
+        .note-buttons {
+            text-align: right;
+        }
+        .note-save {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .note-close {
+            background-color: #ccc;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        /* Grid positioning */
+        .partners { grid-area: partners; }
+        .activities { grid-area: activities; }
+        .value { grid-area: value; }
+        .segments { grid-area: segments; }
+        .resources { grid-area: resources; }
+        .revenue { grid-area: revenue; }
+        .relationships { grid-area: relationships; }
+        .channels { grid-area: channels; }
+        .cost { grid-area: cost; grid-column: 1 / -1; }
+    </style>
+</head>
+<body>
+    <h1>Business Model Canvas - Usaha Pisang Keju</h1>
+    <div class="bmc-container">
+        <div class="bmc-block partners">
+            <h3>8. KEY PARTNERSHIPS</h3>
+            <div class="view-mode" id="key-partnerships-view">
+                <ul>
+                    <li><strong>Supplier:</strong> Toko offline dan online untuk bahan baku</li>
+                    <li><strong>Logistik:</strong> Jasa pengiriman untuk pesanan online</li>
+                    <li><strong>Komunitas:</strong> Kerjasama dengan komunitas sekitar untuk promosi</li>
+                    <li><strong>Warung Sekitar:</strong> Titip jual produk</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="key-partnerships-edit">
+                <textarea id="key-partnerships-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('key-partnerships')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('key-partnerships')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('key-partnerships')">Edit</button>
+        </div>
+
+        <div class="bmc-block activities">
+            <h3>7. KEY ACTIVITIES</h3>
+            <div class="view-mode" id="key-activities-view">
+                <ul>
+                    <li><strong>Produksi:</strong> Memasak pisang keju secara konsisten</li>
+                    <li><strong>Pemasaran:</strong> Promosi di media sosial dan sekitar lokasi</li>
+                    <li><strong>Distribusi:</strong> Melayani penjualan langsung dan online</li>
+                    <li><strong>Quality Control:</strong> Memastikan kualitas bahan dan rasa</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="key-activities-edit">
+                <textarea id="key-activities-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('key-activities')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('key-activities')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('key-activities')">Edit</button>
+        </div>
+
+        <div class="bmc-block value">
+            <h3>2. VALUE PROPOSITIONS</h3>
+            <div class="view-mode" id="value-propositions-view">
+                <ul>
+                    <li><strong>Utama:</strong> Pisang keju berkualitas dengan harga terjangkau (Rp 15.000/10 pisang)</li>
+                    <li><strong>Keunikan:</strong>
+                        <ul>
+                            <li>Kemasan praktis (lunch box)</li>
+                            <li>Rasa konsisten dengan bahan premium</li>
+                            <li>Varian rasa (keju, coklat, original)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kenyamanan:</strong> Pesan online, siap ambil/tunggu</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="value-propositions-edit">
+                <textarea id="value-propositions-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('value-propositions')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('value-propositions')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('value-propositions')">Edit</button>
+        </div>
+
+        <div class="bmc-block segments">
+            <h3>1. CUSTOMER SEGMENTS</h3>
+            <div class="view-mode" id="customer-segments-view">
+                <ul>
+                    <li><strong>Target Utama:</strong> Pelanggan lewat (drive-through) yang mencari camilan cepat</li>
+                    <li><strong>Target Sekunder:</strong> Warga sekitar pasar yang bisa pesan melalui online</li>
+                    <li><strong>Segmentasi:</strong>
+                        <ul>
+                            <li>Keluarga muda</li>
+                            <li>Pelajar/mahasiswa</li>
+                            <li>Pekerja yang lewat area pasar</li>
+                            <li>Penjual di pasar yang butuh camilan</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="customer-segments-edit">
+                <textarea id="customer-segments-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('customer-segments')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('customer-segments')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('customer-segments')">Edit</button>
+        </div>
+
+        <div class="bmc-block resources">
+            <h3>6. KEY RESOURCES</h3>
+            <div class="view-mode" id="key-resources-view">
+                <ul>
+                    <li><strong>Fisik:</strong> Lokasi strategis dekat pasar, peralatan masak</li>
+                    <li><strong>Bahan Baku:</strong> Pisang, keju, tepung, minyak, kemasan</li>
+                    <li><strong>Manusia:</strong> 1-2 orang tenaga produksi dan penjualan</li>
+                    <li><strong>Intelektual:</strong> Resep rahasia, brand "Usaha Pisang Keju"</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="key-resources-edit">
+                <textarea id="key-resources-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('key-resources')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('key-resources')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('key-resources')">Edit</button>
+        </div>
+
+        <div class="bmc-block revenue">
+            <h3>5. REVENUE STREAMS</h3>
+            <div class="view-mode" id="revenue-streams-view">
+                <ul>
+                    <li><strong>Utama:</strong> Penjualan pisang keju (Rp 15.000/box)</li>
+                    <li><strong>Tambahan:</strong>
+                        <ul>
+                            <li>Varian premium (extra keju/coklat) +Rp 2.000-3.000</li>
+                            <li>Paket combo (minuman) +Rp 5.000</li>
+                        </ul>
+                    </li>
+                    <li><strong>Potensial:</strong> Catering pesanan untuk acara kecil</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="revenue-streams-edit">
+                <textarea id="revenue-streams-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('revenue-streams')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('revenue-streams')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('revenue-streams')">Edit</button>
+        </div>
+
+        <div class="bmc-block relationships">
+            <h3>4. CUSTOMER RELATIONSHIPS</h3>
+            <div class="view-mode" id="customer-relationships-view">
+                <ul>
+                    <li><strong>Layanan Personal:</strong> Interaksi langsung saat pembelian</li>
+                    <li><strong>Loyalty:</strong> Diskon untuk pembelian reguler</li>
+                    <li><strong>Feedback:</strong> Meminta review dan saran perbaikan</li>
+                    <li><strong>Komunikasi:</strong> Update melalui media sosial</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="customer-relationships-edit">
+                <textarea id="customer-relationships-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('customer-relationships')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('customer-relationships')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('customer-relationships')">Edit</button>
+        </div>
+
+        <div class="bmc-block channels">
+            <h3>3. CHANNELS</h3>
+            <div class="view-mode" id="channels-view">
+                <ul>
+                    <li><strong>Langsung:</strong> Gerai di lokasi (meski traffic cepat)</li>
+                    <li><strong>Online:</strong>
+                        <ul>
+                            <li>WhatsApp order</li>
+                            <li>Instagram/Facebook</li>
+                            <li>GrabFood/GoFood (jika memungkinkan)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Kerjasama:</strong> Titip jual di warung/kios sekitar pasar</li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="channels-edit">
+                <textarea id="channels-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('channels')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('channels')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('channels')">Edit</button>
+        </div>
+
+        <div class="bmc-block cost">
+            <h3>9. COST STRUCTURE</h3>
+            <div class="view-mode" id="cost-structure-view">
+                <ul>
+                    <li><strong>Biaya Variabel:</strong>
+                        <ul>
+                            <li>Bahan baku (Rp 10.441/porsi)</li>
+                            <li>Kemasan</li>
+                            <li>Biaya pengiriman (jika online)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Biaya Tetap:</strong>
+                        <ul>
+                            <li>Sewa tempat (jika berbayar)</li>
+                            <li>Gas LPG</li>
+                            <li>Biaya listrik</li>
+                            <li>Biaya pemasaran</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="edit-mode" id="cost-structure-edit">
+                <textarea id="cost-structure-textarea"></textarea>
+                <button class="save-btn" onclick="saveEdit('cost-structure')">Save</button>
+                <button class="cancel-btn" onclick="cancelEdit('cost-structure')">Cancel</button>
+            </div>
+            <button class="edit-btn" onclick="editBlock('cost-structure')">Edit</button>
+        </div>
+    </div>
+
+    <!-- Floating Note Icon -->
+    <div class="floating-note" onclick="toggleNote()">📝</div>
+
+    <!-- Note Modal -->
+    <div class="note-modal" id="note-modal">
+        <div class="note-content">
+            <h3>Catatan Strategi</h3>
+            <textarea id="note-textarea">STRATEGI MENGATASI KENDALA LOKASI:
+
+Signage Mencolok:
+
+Papan nama besar dengan warna cerah
+Spanduk dengan harga dan promo jelas
+Lampu sorot untuk malam hari
+
+Sistem Pre-Order:
+
+Pesanan via WA sebelum jam pulang kerja
+Ready stock untuk jam sibuk
+Sistem "ambil tanpa turun" untuk pengendara
+
+Paket "Pasar Special":
+
+Kerjasama dengan pedagang pasar untuk supply camilan
+Paket grosir untuk penjual lain
+Catering kecil untuk lapak-lapak di pasar
+
+Digital Presence:
+
+Peta lokasi jelas di media sosial
+Foto produk menarik
+Testimoni pelanggan</textarea>
+            <div class="note-buttons">
+                <button class="note-save" onclick="saveNote()">Save</button>
+                <button class="note-close" onclick="toggleNote()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for blocks
+        const blockData = {
+            'customer-segments': `<ul><li><strong>Target Utama:</strong> Pelanggan lewat (drive-through) yang mencari camilan cepat</li><li><strong>Target Sekunder:</strong> Warga sekitar pasar yang bisa pesan melalui online</li><li><strong>Segmentasi:</strong><ul><li>Keluarga muda</li><li>Pelajar/mahasiswa</li><li>Pekerja yang lewat area pasar</li><li>Penjual di pasar yang butuh camilan</li></ul></li></ul>`,
+            'value-propositions': `<ul><li><strong>Utama:</strong> Pisang keju berkualitas dengan harga terjangkau (Rp 15.000/10 pisang)</li><li><strong>Keunikan:</strong><ul><li>Kemasan praktis (lunch box)</li><li>Rasa konsisten dengan bahan premium</li><li>Varian rasa (keju, coklat, original)</li></ul></li><li><strong>Kenyamanan:</strong> Pesan online, siap ambil/tunggu</li></ul>`,
+            'channels': `<ul><li><strong>Langsung:</strong> Gerai di lokasi (meski traffic cepat)</li><li><strong>Online:</strong><ul><li>WhatsApp order</li><li>Instagram/Facebook</li><li>GrabFood/GoFood (jika memungkinkan)</li></ul></li><li><strong>Kerjasama:</strong> Titip jual di warung/kios sekitar pasar</li></ul>`,
+            'customer-relationships': `<ul><li><strong>Layanan Personal:</strong> Interaksi langsung saat pembelian</li><li><strong>Loyalty:</strong> Diskon untuk pembelian reguler</li><li><strong>Feedback:</strong> Meminta review dan saran perbaikan</li><li><strong>Komunikasi:</strong> Update melalui media sosial</li></ul>`,
+            'revenue-streams': `<ul><li><strong>Utama:</strong> Penjualan pisang keju (Rp 15.000/box)</li><li><strong>Tambahan:</strong><ul><li>Varian premium (extra keju/coklat) +Rp 2.000-3.000</li><li>Paket combo (minuman) +Rp 5.000</li></ul></li><li><strong>Potensial:</strong> Catering pesanan untuk acara kecil</li></ul>`,
+            'key-activities': `<ul><li><strong>Produksi:</strong> Memasak pisang keju secara konsisten</li><li><strong>Pemasaran:</strong> Promosi di media sosial dan sekitar lokasi</li><li><strong>Distribusi:</strong> Melayani penjualan langsung dan online</li><li><strong>Quality Control:</strong> Memastikan kualitas bahan dan rasa</li></ul>`,
+            'key-resources': `<ul><li><strong>Fisik:</strong> Lokasi strategis dekat pasar, peralatan masak</li><li><strong>Bahan Baku:</strong> Pisang, keju, tepung, minyak, kemasan</li><li><strong>Manusia:</strong> 1-2 orang tenaga produksi dan penjualan</li><li><strong>Intelektual:</strong> Resep rahasia, brand "Usaha Pisang Keju"</li></ul>`,
+            'key-partnerships': `<ul><li><strong>Supplier:</strong> Toko offline dan online untuk bahan baku</li><li><strong>Logistik:</strong> Jasa pengiriman untuk pesanan online</li><li><strong>Komunitas:</strong> Kerjasama dengan komunitas sekitar untuk promosi</li><li><strong>Warung Sekitar:</strong> Titip jual produk</li></ul>`,
+            'cost-structure': `<ul><li><strong>Biaya Variabel:</strong><ul><li>Bahan baku (Rp 10.441/porsi)</li><li>Kemasan</li><li>Biaya pengiriman (jika online)</li></ul></li><li><strong>Biaya Tetap:</strong><ul><li>Sewa tempat (jika berbayar)</li><li>Gas LPG</li><li>Biaya listrik</li><li>Biaya pemasaran</li></ul></li></ul>`
+        };
+
+        // Load from localStorage on init
+        function loadData() {
+            Object.keys(blockData).forEach(key => {
+                const saved = localStorage.getItem(key);
+                if (saved) {
+                    document.getElementById(key + '-view').innerHTML = saved;
+                }
+            });
+            const savedNote = localStorage.getItem('note');
+            if (savedNote) {
+                document.getElementById('note-textarea').value = savedNote;
+            }
+        }
+
+        function editBlock(blockId) {
+            const view = document.getElementById(blockId + '-view');
+            const edit = document.getElementById(blockId + '-edit');
+            const textarea = document.getElementById(blockId + '-textarea');
+            textarea.value = view.innerHTML;
+            view.style.display = 'none';
+            edit.style.display = 'block';
+        }
+
+        function saveEdit(blockId) {
+            const view = document.getElementById(blockId + '-view');
+            const edit = document.getElementById(blockId + '-edit');
+            const textarea = document.getElementById(blockId + '-textarea');
+            view.innerHTML = textarea.value;
+            edit.style.display = 'none';
+            view.style.display = 'block';
+            localStorage.setItem(blockId, view.innerHTML);
+        }
+
+        function cancelEdit(blockId) {
+            const view = document.getElementById(blockId + '-view');
+            const edit = document.getElementById(blockId + '-edit');
+            edit.style.display = 'none';
+            view.style.display = 'block';
+        }
+
+        function toggleNote() {
+            const modal = document.getElementById('note-modal');
+            modal.style.display = modal.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function saveNote() {
+            const textarea = document.getElementById('note-textarea');
+            localStorage.setItem('note', textarea.value);
+            toggleNote();
+        }
+
+        // Init
+        loadData();
+    </script>
+</body>
+</html>
